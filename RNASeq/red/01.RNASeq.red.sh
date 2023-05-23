@@ -5,9 +5,10 @@
 #         RNA-Seq data: GEO GSE232390: GSM7329826, GSM7329827
 # Output: 1. K562.red.RNAseq1.genes.results    K562 red hg38 gene expression replicate 1
 #            K562.red.RNAseq2.genes.results    K562 red hg38 gene expression replicate 2
-#         2. K562.red.hg38.TPM                 joined replicas expression all and average values
+#         2. K562.red.hg38.TPM                 joined replicates expression all and average values
+#            K562.red.hg38.names               joined replicates expression all and average values with ISO names
 #            K562.red.hg38.mean.TPM            K562 red hg38 gene expression average values per gene
-#            K562.red.hg38.names               K562 red hg38 gene expression average values per gene with ISO names
+#            K562.red.hg38.mean.names          K562 red hg38 gene expression average values per gene with ISO names
 #
 # Dependency tools:
 # 1. NCBI SRA Toolkit     https://github.com/ncbi/sra-tools
