@@ -4,8 +4,8 @@
 #
 # (C) Yuri Kravatsky, lokapal@gmail.com, jiri@eimb.ru
 #
-# Input:  1. table_hg38.rep1.txt replicate 1 table (output of the script 02.mapping.sh)
-#         2. table_hg38.rep2.txt replicate 2 table (output of the script 02.mapping.sh changed to process rep2)
+# Input:  1. table_hg38.white.rep1.txt replicate 1 table (output of the script 02.mapping.sh)
+#         2. table_hg38.white.rep2.txt replicate 2 table (output of the script 02.mapping.sh changed to process rep2)
 #         3. lib/K562.white.mean.TPM gene expression values from RNAseq output (e.g. output from RNASeq directory) 
 # Output: 1. K562.4C.white.nodfam.intersect.txt        K562 white 4C genome mappings intersections rep1 and rep2, DFAM removed table
 #         2. K562.4C.white.nodfam.intersect.bedGraph   K562 white 4C hg38 profile for genome browsers
