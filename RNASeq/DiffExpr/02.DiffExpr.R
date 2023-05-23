@@ -139,7 +139,7 @@ resdata <- resdata %>% select(GeneID, symbol, everything())
 names(resdata)[2]<- "GeneName"
 
 ## Write results
-write.table(resdata, file="WHITE-RED.results.tsv",sep='\t')
+write.table(resdata, file="RNASeq.WHITE-RED.results.tsv",sep='\t')
 
 cairo_pdf("WHITE-RED.maplot.pdf",width=15,height=10,pointsize=16,antialias="default",fallback_resolution = 300,onefile=T)
 DESeq2::plotMA(res, ylim=c(-1,1))
