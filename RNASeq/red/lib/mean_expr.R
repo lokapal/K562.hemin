@@ -1,5 +1,8 @@
 #!/usr/bin/Rscript
-
+# script to obtain mean expression values in TPM and FPKM from RSEM calculated tables.
+# (C) Yuri Kravatsky, lokapal@gmail.com, jiri@eimb.ru
+# Dependency tools:
+# R with libraries     tibble, dplyr
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))
 namehead = "K562.red.RNAseq"
