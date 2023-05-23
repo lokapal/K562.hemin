@@ -1,10 +1,19 @@
 #!/bin/bash
+# TYPE should be set to white and/or red
 TYPE=white
+# REP should be set to rep1 and/or rep2
 REP=rep1
+# READ should be set to R1 and/or R2
+READ=R1
+# all possible combinations should be processed:
+# white rep1 R1    |     white rep1 R2
+# white rep2 R1    |     white rep2 R2
+# red rep1 R1      |     red rep1 R2
+# red rep2 R1      |     red rep2 R2
 # leading full adapters at 5' end cut
 cutadapt -O 10 -j 20 --trim-n --times=4 --minimum-length 20 -q 24 --untrimmed-output=untr.R1.1.fastq.gz \
 -g file:./lib/fulladapters.fa \
--o R1.1.fastq.gz 4C.K562.$TYPE.$REP.R1.fastq.gz
+-o R1.1.fastq.gz 4C.K562.$TYPE.$REP.$READ.fastq.gz
 mv R1.1.fastq.gz R1.j1.fastq.gz
 #cat untr.R1.1.fastq.gz 
 #
@@ -53,6 +62,6 @@ cutadapt -O 10 -j 20 --times=4 --minimum-length 20 -q 24 --untrimmed-output=untr
 -a file:./lib/fulladapters.tails.fa \
 -o R5.1.fastq.gz R4.j1.fastq.gz
 cat untr.R5.1.fastq.gz R5.1.fastq.gz  > R1.LQ.fastq.gz
-cat R1.fastq.gz R1.LQ.fastq.gz > $TYPE.$REP.R1.fastq.gz
+cat R1.fastq.gz R1.LQ.fastq.gz > $TYPE.$REP.$READ.fastq.gz
 # cleanup from temporary files
 rm -f untr*.fastq.gz R*.fastq.gz
