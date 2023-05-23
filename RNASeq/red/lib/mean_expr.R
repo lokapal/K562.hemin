@@ -7,10 +7,11 @@ suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))
 namehead = "K562.red.RNAseq"
 nametail = ".genes.results"
+# replicates number
+REPs     = 2
 
-for (num in 1:2) {
+for (num in 1:REPs) {
    fname <- paste0(namehead,num,nametail)
-#  cat(fname,"\n")
    temptbl <- read.table(fname, skip=1, sep = "\t", strip.white = TRUE)
    newname <- paste0("Expr",num)
    FPKM    <- paste0("FPKM",num)
@@ -20,7 +21,6 @@ for (num in 1:2) {
          alldata <- as.data.frame (temptbl$newname,row.names=temptbl$V1)
          alldata <- as.data.frame (temptbl[[newname]],row.names=as.vector(temptbl$V1))
          colnames(alldata)[num] <- newname
-#         head(alldata)
 
          FPdata <- as.data.frame (temptbl$FPKM,row.names=temptbl$V1)
          FPdata <- as.data.frame (temptbl[[FPKM]],row.names=as.vector(temptbl$V1))
@@ -37,13 +37,8 @@ for (num in 1:2) {
 #  meanvect <- apply(alldata, 1, mean, trim=0.2) # trimmed mean
   meanvect <- apply(alldata, 1, mean)          # "true" mean
 
-
 meanpkm  <- apply(FPdata, 1, mean)          # FPKM "true" mean
 medpkm   <- apply(FPdata, 1, median)        # FPKM median
-
-#  collist <- c(2:9)
-#  subset <- alldata %>% select(collist)
-#write.table(as.data.frame(subset), file="subset.txt", row.names=F, col.names=T, sep="\t", quote=F)
 
 alldata <- add_column(alldata,medvect,meanvect)
 alldata <- rownames_to_column(alldata, var = "GeneID") %>% as_tibble()
