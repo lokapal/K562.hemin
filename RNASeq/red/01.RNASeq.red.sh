@@ -30,5 +30,6 @@ rsem-calculate-expression -p 32 --fragment-length-mean 255 --star -p 32 --output
 --ci-memory 30720 --star-gzipped-read-file rep2.filtered.fastq.gz /usr/local/genomes/hg38.rsem/hg38 K562.red.RNAseq2
 # Calculate average expression values between replicas
 ./lib/mean_expr.R
-./lib/addisonames.R K562.red.mean.TPM
+./lib/addisonames.R K562.red.hg38.TPM
+./lib/addisonames.R K562.red.hg38.mean.TPM
 rm -f *.bam
