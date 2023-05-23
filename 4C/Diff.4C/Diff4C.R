@@ -84,37 +84,40 @@ invisible(dev.off())
 
 # Get differential expression results
 res <- results(dds)
-# decoding gene names
-suppressPackageStartupMessages(require(biomaRt))
-ensembl_ids <- row.names(res) 
-# Prepare gene table with some simple caching to avoid stressing the Ensembl server by many repeated runs 
-genes.table = NULL 
-if (!file.exists("cache.genes.table")) {
-      message("Retrieving genes table from Ensembl...")
-      mart <- useMart("ensembl")
-#listDatasets(mart=mart)
-      mart <- useDataset("hsapiens_gene_ensembl", mart = mart)
-      genetable <- getBM(filter="ensembl_gene_id", attributes=c("ensembl_gene_id", "external_gene_name"), values=ensembl_ids, mart=mart,uniqueRows=TRUE)
-      save(genetable, file= "cache.genes.table")
-                                       } else {
-        load("cache.genes.table")
-        message("Reading gene annotation information from cache file,\nRemove the file cache.genes.table if you want to force retrieving data from Ensembl")
-         }
 
-m <- match(genetable$ensembl_gene_id, rownames(res))
+# assign ISO gene names to gene IDs
+suppressPackageStartupMessages(library(plyranges))
+
+# Load genome annotation. It should be the same as used in 4C gene assignments!
+gr  <- read_gff("/usr/local/genomes/hg38.gtf")
+gr  <- filter (gr, type == "gene" ) %>% select(gene_id, gene_name)
+out <- as.data.frame(gr)
+
+# only gene IDs and names
+out <- out %>% select (gene_id, gene_name)
+out <- out %>% mutate (gene_id = gsub("\\.\\d+$","",gene_id))
+
+# replace NAs in gene_name to gene_ids
+out <- out %>% mutate (gene_name = coalesce(gene_name, gene_id))
+m <- match(out$gene_id, rownames(res))
 res.sub <- res[m,]
-res.sub$symbol <- genetable$external_gene_name
+res.sub$symbol <- out$gene_name
 mcols(res.sub)[7,] <- DataFrame(type="GeneName",description="Common Gene Name")
-#mcols(res.sub)
 res <- res.sub
+
 table(res$padj<0.05)
 ## Order by adjusted p-value
 res <- res[order(res$padj), ]
+
 ## Merge with normalized count data
 resdata <- merge(as.data.frame(res), as.data.frame(counts(dds, normalized=TRUE)), by="row.names", sort=FALSE)
-names(resdata)[1] <- "Gene"
+names(resdata)[1] <- "GeneID"
+
+resdata <- resdata %>% select(GeneID, symbol, everything())
+names(resdata)[2]<- "GeneName"
+
 ## Write results
-write.table(resdata, file="diffexpr-results.tsv",sep='\t')
+write.table(resdata, file="K562.4C.WHITE-RED.results.tsv",sep='\t')
 
 cairo_pdf("K562.4C.maplot.pdf",width=15,height=10,pointsize=16,antialias="default",fallback_resolution = 300,onefile=T)
 plotMA(dds, ylim=c(-1,1), cex=1)
