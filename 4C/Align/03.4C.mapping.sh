@@ -17,7 +17,7 @@ TYPE=white
 # set replicate number before use. rep1 for the first replicate, rep2 for the second etc.
 REP=rep1
 #
-bwa mem -t 20 /usr/local/genomes/hg38.mfa $TYPE.$REP.R1.fastq.gz $TYPE.$REP.R2.fastq.gz | samtools view -bS -F 4 -o hits.bam
+bwa mem -t 20 /usr/local/genomes/hg38.mfa $TYPE.$REP.filtered.R1.fastq.gz $TYPE.$REP.filtered.R2.fastq.gz | samtools view -bS -F 4 -o hits.bam
 samtools sort -@ 10 hits.bam -O BAM -o hits_sorted.bam
 mv hits_sorted.bam hits.bam
 samtools mpileup -f /usr/local/genomes/hg38.mfa hits.bam -o pileup.txt
