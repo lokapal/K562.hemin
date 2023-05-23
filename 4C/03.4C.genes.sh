@@ -21,9 +21,11 @@
 #                         http://ftp.ensembl.org/pub/current_gtf/homo_sapiens/
 #
 # Part 1. Find intersection between replicates, remove mappings that are completely inside DFAM entries
-# get DFAM database and convert it to bed format
-# set type
+#
+# set cell treatment before use. E.g. untreated, hemin, white, red etc.
 TYPE=white
+#
+# get DFAM database and convert it to bed format
 wget https://www.dfam.org/releases/current/annotations/hg38/hg38.nrph.hits.gz
 ./lib/dfam2bed.pl hg38.nrph.hits.gz
 mv hg38.nrph.hits.bed hg38_dfam.bed
