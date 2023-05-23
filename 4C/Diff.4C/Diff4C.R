@@ -1,6 +1,26 @@
 #!/usr/bin/Rscript
-## RNA-seq analysis with DESeq2
+# script to perform differential 4C analysis 
+# (C) Yuri Kravatsky, lokapal@gmail.com, jiri@eimb.ru
+# Input:  counts.txt pre-computed file by featureCounts, filtered to 100+ contacts
+# Output: 1. K562.4C.WHITE-RED.results.tsv          K562 white-red 4C Differential analysis tabbed file
+#         2. K562.4C.WHITE-RED.scatterplots.pdf     Scatterplots to control replicates consistency
+#         3. K562.4C.WHITE-RED.volcanoplot.pdf      VolcanoPlot to display the most prominent 4C down/upcontacted genes
+#         4. K562.4C.WHITE-RED.PCA.pdf              PCA to control replicates consistency
+#
+# Dependency tools & libraries:
+# 1. R
+# Bioconductor packages:
+# 2. DESeq2 R             https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+# 3. EnhancedVolcano      https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html
+# 4. rtracklayer          https://bioconductor.org/packages/release/bioc/html/rtracklayer.html
+# 5. genefilter           https://bioconductor.org/packages/release/bioc/html/genefilter.html
+# 6. PCAExplorer          https://bioconductor.org/packages/release/bioc/html/pcaExplorer.html
+# Common R libraries:
+# 6. dplyr, ggplot2, tibble, RColorBrewer, gplots, ggrepel, calibrate
 
+# Import data from featureCounts
+## Previously ran at command line something like this:
+## featureCounts -a genes.gtf -o counts.txt -T 12 -t exon -g gene_id GSM*.sam
 countdata <- read.table("counts.selected", header=TRUE, row.names=1)
 
 # Remove first five columns (chr, start, end, strand, length)
