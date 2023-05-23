@@ -1,10 +1,15 @@
 #!/usr/bin/Rscript
+# script to add gene ISO names for gene IDs 
+# (C) Yuri Kravatsky, lokapal@gmail.com, jiri@eimb.ru
+# Dependency tools:
+# 5. R with libraries     plyranges, dplyr
+
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {
   stop("At least one argument must be supplied (input file)\n", call.=FALSE)
                      }
 
-# replace file extension to "names"
+# replace input file extension to "names"
 outname <- gsub("(\\.[A-Za-z0-9]+)$", "\\.names", args[1])
 
 res <- read.table(args[1], header=TRUE, row.names=NULL,sep = "\t")
