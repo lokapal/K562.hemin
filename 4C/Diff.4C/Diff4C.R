@@ -32,7 +32,6 @@ colnames(countdata) <- gsub("\\.\\.\\.", "", colnames(countdata))
 
 # Convert to matrix
 countdata <- as.matrix(countdata)
-head(countdata)
 
 # Assign condition (first two are expansion, second two are control)
 (condition <- factor(c(rep("ctl", 2), rep("exp", 2))))
